@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weather</title>
+     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<style type= "text/css">
+
+#body {background: url('/weather.jpg') no-repeat center center fixed;}
+#title{margin-left:35%; color: white; font-size: 72px}
+.containerData{margin-left:30%;}
+.panel-group{width: 47%}
+#list{margin-left: 30%}
+.form-inline{margin-left: 65%; padding-top: 7px}
+
+
+</style>
+
+<body id = "body">
+
+<h1 id="title">Weather App</h1><br>
+
+<div class = "containerSearch">
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Find Your Local Weather</a>
+    </div>
+    
+      <form class="form-inline">
+  <div class="form-group">
+    <label for="state">Enter State:</label>
+    <input type="text" class="form-control" id="state">
+  </div>
+  <div class="form-group">
+    <label for="city">Enter City:</label>
+    <input type="text" class="form-control" id="city">
+  </div>
+  <button type="button" class="btn btn-default" id="submit">Submit</button>
+</form>
+
+  </div>
+</nav>
+
+
+</div>
+<br>
+
+
+<div class = "containerData">
+  <div class = "panel-group">
+    <div class="panel panel-info">
+    <div class = "panel-heading"><strong>Weather</strong></div>
+    <div class = "panel-body" id = "weather"></div>
+    </div>
+    
+    <div class="panel panel-info">
+    <div class = "panel-heading"><strong>Temperature</strong></div>
+    <div class = "panel-body" id = "temp"></div>
+    </div>
+    
+    <div class="panel panel-info">
+    <div class = "panel-heading"><strong>Wind Gust</strong></div>
+    <div class = "panel-body" id = "wind"></div>
+    </div>
+    
+    <div class="panel panel-info">
+    <div class = "panel-heading"><strong>Relative Humidity</strong></div>
+    <div class = "panel-body" id = "humidity"></div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    
+        $(document).ready(function () 
+       		{        	
+        $('#submit').click(function(){
+        	$.getJSON("/weatherservice/" + $('#state').val() + "/" + $('#city').val(), getWeather);
+        })
+        });
+        
+        
+        function getWeather(response){        	
+      		
+        	$('#weather').text(response.current_observation.weather);
+        	$('#temp').text(response.current_observation.temperature_string);
+        	$('#wind').text(response.current_observation.wind_mph + " mph");
+        	$('#humidity').text(response.current_observation.relative_humidity);       	
+        }     
+        
+        
+        
+        </script>
+        

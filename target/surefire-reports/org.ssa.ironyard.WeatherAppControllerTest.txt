@@ -1,0 +1,9 @@
+-------------------------------------------------------------------------------
+Test set: org.ssa.ironyard.WeatherAppControllerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec <<< FAILURE! - in org.ssa.ironyard.WeatherAppControllerTest
+test(org.ssa.ironyard.WeatherAppControllerTest)  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.AssertionError: Not yet implemented
+	at org.junit.Assert.fail(Assert.java:88)
+	at org.ssa.ironyard.WeatherAppControllerTest.test(WeatherAppControllerTest.java:11)
+
