@@ -26,7 +26,7 @@ public class WeatherController {
     
     @RequestMapping(value = "")
     public View weatherView() {
-    return new InternalResourceView("Weather.html");
+    return new InternalResourceView("Weather-Angular.html");
     }
     
     
