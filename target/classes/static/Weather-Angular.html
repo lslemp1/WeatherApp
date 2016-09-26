@@ -14,7 +14,7 @@
 .panel-heading{font-size: 18px}
 #list{margin-left: 30%}
 #location{margin-left: 35%; font-size: 32px}
-
+#load {text-align: center; font-size: 18px}
 
 #title{
 color: white; 
@@ -43,8 +43,6 @@ padding-top: 7px
 
 <div class = "containerSearch">
 
-
-
 <nav class="navbar navbar-default" id="nav">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -53,12 +51,12 @@ padding-top: 7px
     
     <form class="form-inline" ng-submit="WC.returnWeather()">
   	<div class="form-group">
-    	<label for="state">Enter State:</label>
-    	<input type="text" class="form-control" placeholder="State" id="state" ng-model="WC.state">
-  	</div>
-  	<div class="form-group">
+  	  	<div class="form-group">
     	<label for="city">Enter City:</label>
     	<input type="text" class="form-control" placeholder="City" id="city" ng-model="WC.city">
+  	</div>
+    	<label for="state">Enter State:</label>
+    	<input type="text" class="form-control" placeholder="State" id="state" ng-model="WC.state">
   	</div>
   	<button type="submit" class="btn btn-default" id="submit" ng-disabled ="! (WC.state && WC.city)">Get Weather</button>
 	</form>
@@ -67,7 +65,8 @@ padding-top: 7px
 </div>
 <br>	
  
-<div id ="location">{{WC.city}}, {{WC.state}}</div>
+ 
+<div id ="location" ng-hide="! (WC.state && WC.city)">{{WC.city}}, {{WC.state}}</div>
 <br>
 
 
@@ -75,22 +74,22 @@ padding-top: 7px
   <div class = "panel-group">
     <div class="panel panel-info">
     <div class = "panel-heading"><strong>Weather</strong></div>
-    <div class = "panel-body" id = "weather"  >{{ WC.weather.current_observation.weather }}</div>
+    <div class = "panel-body" id = "weather" ><div ng-show="WC.load">Loading...</div>{{ WC.weather.weather }}</div>
     </div>
     
     <div class="panel panel-info">
     <div class = "panel-heading"><strong>Temperature</strong></div>
-    <div class = "panel-body" id = "temp" >{{ WC.weather.current_observation.temperature_string }}</div>
+    <div class = "panel-body" id = "temp" ><div ng-show="WC.load">Loading...</div>{{ WC.weather.temperature_string }}</div>
     </div>
     
     <div class="panel panel-info">
     <div class = "panel-heading"><strong>Wind Gust</strong></div>
-    <div class = "panel-body" id = "wind" >{{ WC.weather.current_observation.wind_mph }} mph</div>
+    <div class = "panel-body" id = "wind" ><div ng-show="WC.load">Loading...</div>{{ WC.weather.wind_mph }} mph</div>
     </div>
     
     <div class="panel panel-info">
     <div class = "panel-heading"><strong>Relative Humidity</strong></div>
-    <div class = "panel-body" id = "humidity" >{{ WC.weather.current_observation.relative_humidity }}</div>
+    <div class = "panel-body" id = "humidity" ><div ng-show="WC.load">Loading...</div>{{ WC.weather.relative_humidity }}</div>
     </div>
 </div>
 </div> 
@@ -104,47 +103,39 @@ padding-top: 7px
     <script src = "js/angular-1.5.3.min.js"></script>
     <script type="text/javascript">
     
-    angular.module('weather', []).controller("WeatherController", function ($http, $scope)
+    angular.module('weather', []).controller("WeatherController", function ($http)
     		{
     	
-    		this.weather = [];
-    		
-    		this.returnWeather = function(response)
-    		{
-    		var self = this;    		
-    		$http.get('/weatherservice/' + self.state + "/" + self.city + ".json").then(function(response) 
+    		var controller = this;
+/*     	    var sunny = {'background-image':'url(../sunny.jpg)'};
+            var cloudy = {'background-image':'url(../clouds.jpg)'};  */
+    	
+            controller.weather = [];  		
+            controller.returnWeather = function(response)
+    		{ 
+            controller.load = true;
+            controller.mph = true;
+    		$http.get('/weatherservice/' + controller.state + "/" + controller.city).then(function(response) 
     		{
     			console.log(response.data);
-    			self.weather = response.data;
-    			
-    		})
-    		
-            var sunny = {'background-image':'url(../sunny.jpg)'};
-            var cloudy = {'background-image':'url(../clouds.jpg)'};
-              
-            setTimeout(function(){
-            	$scope.alertStyle = {'display':'none'}
+    			controller.weather = response.data.current_observation;
+    			controller.load = false;
+    			controller.mph = false;
+/*     			
             	if(response.data.current_observation.weather == 'Clear'){
-            		$scope.imgStyle = sun;
+            		controller.imgStyle = sun;
             		$scope.$apply();
               	}else{
               	if(response.data.current_observation.weather == 'Clouds'){
-              		$scope.imgStyle = cloudy;
+              		controller.imgStyle = cloudy;
               		$scope.$apply();
               	} else{
-              		$scope.imgStyle = sun;
-              		$scope.$apply();
+              		controller.imgStyle = sun;
+              		$scope.$apply(); */
+    			
+    		})
               	}
-              	}
-            }, 1500);;
-    		}	
-    		
-    /* 		var rain = 
-    		var clouds = 
-    		var sun =  */
     		});        
         
     </script>
         
-        
-       
